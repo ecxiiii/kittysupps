@@ -1,0 +1,4 @@
+# Screenshots and temp files
+*.png
+.firecrawl/
+.playwright-mcp/
