@@ -630,20 +630,233 @@
       font-size: 1.6rem;
       font-weight: 700;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
       margin-bottom: 1.6rem;
       letter-spacing: 0.3px;
+      position: relative;
+      overflow: hidden;
     }
+    .add-to-cart-btn:hover { background: #2a7cd4; }
+    .add-to-cart-btn:active { transform: scale(0.98); }
+    .add-to-cart-btn.loading .add-to-cart-btn__label { opacity: 0; }
+    .add-to-cart-btn.loading .add-to-cart-btn__spinner { display: block; }
+    .add-to-cart-btn__label { transition: opacity 0.2s; }
+    .add-to-cart-btn__spinner {
+      display: none;
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .add-to-cart-btn__spinner svg {
+      width: 2.2rem; height: 2.2rem;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .add-to-cart-btn:hover {
-      background: #2a7cd4;
+    /* ========== CART DRAWER ========== */
+    .cart-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(18,18,18,0.5);
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
     }
-
-    .add-to-cart-btn:active {
-      transform: scale(0.98);
+    .cart-drawer-overlay.active { opacity: 1; visibility: visible; }
+    .cart-drawer {
+      position: fixed;
+      top: 0; right: 0;
+      width: 42rem;
+      max-width: 90vw;
+      height: 100%;
+      background: #fff;
+      z-index: 1000;
+      transform: translateX(100%);
+      transition: transform 0.35s ease;
+      display: flex;
+      flex-direction: column;
     }
+    .cart-drawer.active { transform: translateX(0); }
+    .cart-drawer__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.6rem 2rem;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .cart-drawer__title {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .cart-drawer__close {
+      font-size: 2.4rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0.4rem;
+      line-height: 1;
+      color: #333;
+    }
+    .cart-drawer__timer {
+      background: #121212;
+      color: #fff;
+      text-align: center;
+      padding: 0.8rem;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .cart-drawer__items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.6rem 2rem;
+    }
+    .cart-drawer__item {
+      display: flex;
+      gap: 1.4rem;
+      padding-bottom: 1.4rem;
+      margin-bottom: 1.4rem;
+      border-bottom: 1px solid #eee;
+    }
+    .cart-drawer__item:last-child { border-bottom: none; margin-bottom: 0; }
+    .cart-drawer__item-img {
+      width: 8rem;
+      height: 8rem;
+      border-radius: 8px;
+      object-fit: cover;
+      background: #f5f5f5;
+      flex-shrink: 0;
+    }
+    .cart-drawer__item-info { flex: 1; }
+    .cart-drawer__item-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #121212;
+    }
+    .cart-drawer__item-tag {
+      display: inline-block;
+      background: #3d93e9;
+      color: #fff;
+      font-size: 1rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      margin-bottom: 0.4rem;
+    }
+    .cart-drawer__item-badge {
+      display: inline-block;
+      background: #e8f4fd;
+      color: #3d93e9;
+      font-size: 1rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-left: 0.4rem;
+    }
+    .cart-drawer__item-prices {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 1.2rem;
+      margin-bottom: 0.4rem;
+    }
+    .cart-drawer__item-price--old {
+      text-decoration: line-through;
+      color: #999;
+    }
+    .cart-drawer__item-price--new {
+      font-weight: 700;
+      color: #3d93e9;
+    }
+    .cart-drawer__item-savings {
+      color: #16a34a;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .cart-drawer__item-qty {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-top: 0.6rem;
+    }
+    .cart-drawer__item-qty button {
+      width: 3rem; height: 3rem;
+      border: 1px solid #ddd;
+      background: #fff;
+      cursor: pointer;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cart-drawer__item-qty span {
+      width: 3.6rem; height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    .cart-drawer__item--free .cart-drawer__item-name { color: #16a34a; }
+    .cart-drawer__footer {
+      border-top: 1px solid #e8e8e8;
+      padding: 1.4rem 2rem 2rem;
+    }
+    .cart-drawer__savings {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.3rem;
+      margin-bottom: 0.6rem;
+    }
+    .cart-drawer__savings-label { color: #16a34a; font-weight: 600; }
+    .cart-drawer__savings-value { color: #16a34a; font-weight: 700; }
+    .cart-drawer__subtotal {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      color: #121212;
+    }
+    .cart-drawer__discounts {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 1.2rem;
+    }
+    .cart-drawer__discounts span {
+      display: inline-block;
+      background: #e8f4fd;
+      color: #3d93e9;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 1rem;
+      margin: 0.2rem 0.2rem 0 0;
+    }
+    .cart-drawer__checkout {
+      width: 100%;
+      padding: 1.4rem;
+      background: #5cb85c;
+      color: #fff;
+      font-size: 1.6rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      transition: background 0.2s;
+    }
+    .cart-drawer__checkout:hover { background: #4cae4c; }
+    .cart-drawer__payment-icons {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .cart-drawer__payment-icons img { height: 2.2rem; }
 
     /* ========== SHIPPING INFO ========== */
     .shipping-info {
@@ -1794,7 +2007,10 @@
         </div>
 
         <!-- Add to Cart -->
-        <button class="add-to-cart-btn" id="addToCartBtn">Add to cart</button>
+        <button class="add-to-cart-btn" id="addToCartBtn">
+          <span class="add-to-cart-btn__label">Add to cart</span>
+          <span class="add-to-cart-btn__spinner"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-dasharray="50" stroke-dashoffset="15" stroke-linecap="round"/></svg></span>
+        </button>
 
         <!-- Shipping Info -->
         <div class="shipping-info">
@@ -2505,6 +2721,37 @@
     </div>
   </footer>
 
+  <!-- ===== CART DRAWER ===== -->
+  <div class="cart-drawer-overlay" id="cartOverlay"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer__header">
+      <span class="cart-drawer__title" id="cartTitle">Cart &bull; 0 items</span>
+      <button class="cart-drawer__close" id="cartClose">&times;</button>
+    </div>
+    <div class="cart-drawer__timer" id="cartTimer">Cart reserved for <span id="cartTimerValue">05:00</span></div>
+    <div class="cart-drawer__items" id="cartItems"></div>
+    <div class="cart-drawer__footer">
+      <div class="cart-drawer__savings" id="cartSavings">
+        <span class="cart-drawer__savings-label">Savings</span>
+        <span class="cart-drawer__savings-value" id="cartSavingsValue">-$0.00</span>
+      </div>
+      <div class="cart-drawer__subtotal">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">$0.00</span>
+      </div>
+      <div class="cart-drawer__discounts" id="cartDiscounts"></div>
+      <button class="cart-drawer__checkout">Check out</button>
+      <div class="cart-drawer__payment-icons">
+        <img src="https://cdn.shopify.com/shopifycloud/checkout-web/assets/0169695890db3db16bfe.svg" alt="American Express">
+        <img src="https://cdn.shopify.com/shopifycloud/checkout-web/assets/ae9ceec48b1dc489596c.svg" alt="Apple Pay">
+        <img src="https://cdn.shopify.com/shopifycloud/checkout-web/assets/f11b90c2972f3811f2d5.svg" alt="Google Pay">
+        <img src="https://cdn.shopify.com/shopifycloud/checkout-web/assets/0169695890db3db16bfe.svg" alt="Mastercard">
+        <img src="https://cdn.shopify.com/shopifycloud/checkout-web/assets/ae9ceec48b1dc489596c.svg" alt="Shop Pay">
+        <img src="https://cdn.shopify.com/shopifycloud/checkout-web/assets/f11b90c2972f3811f2d5.svg" alt="Visa">
+      </div>
+    </div>
+  </div>
+
   <!-- Disclaimer -->
   <div class="disclaimer">
     The information contained within this site is not intended as a substitute for professional medical or veterinary
@@ -2763,21 +3010,122 @@
       mobileNavClose.addEventListener('click', closeNav);
       mobileNavOverlay.addEventListener('click', closeNav);
 
-      // ===== ADD TO CART =====
-      document.getElementById('addToCartBtn').addEventListener('click', function () {
+      // ===== CART DRAWER =====
+      var cartDrawer = document.getElementById('cartDrawer');
+      var cartOverlay = document.getElementById('cartOverlay');
+      var cartClose = document.getElementById('cartClose');
+      var cartTimerValue = document.getElementById('cartTimerValue');
+      var cartTimerInterval = null;
+
+      function openCart() {
+        cartDrawer.classList.add('active');
+        cartOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        startCartTimer();
+      }
+      function closeCart() {
+        cartDrawer.classList.remove('active');
+        cartOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+      cartClose.addEventListener('click', closeCart);
+      cartOverlay.addEventListener('click', closeCart);
+
+      function startCartTimer() {
+        var seconds = 300;
+        if (cartTimerInterval) clearInterval(cartTimerInterval);
+        cartTimerInterval = setInterval(function () {
+          seconds--;
+          if (seconds <= 0) { clearInterval(cartTimerInterval); seconds = 0; }
+          var m = Math.floor(seconds / 60);
+          var s = seconds % 60;
+          cartTimerValue.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+        }, 1000);
+      }
+
+      function renderCart() {
         var bp = bundlePrices[selectedQty];
         var effectivePrice = bp.price;
         if (isSubscribed) effectivePrice = effectivePrice * 0.80;
         var total = (effectivePrice * selectedQty).toFixed(2);
-        var type = isSubscribed ? 'Subscription' : 'One-time';
+        var originalTotal = (80 * selectedQty).toFixed(2);
+        var savings = (80 * selectedQty - effectivePrice * selectedQty).toFixed(2);
+        var itemCount = selectedQty;
 
-        alert(
-          'Added to cart!\n\n' +
-          'Quantity: ' + selectedQty + ' tub(s)\n' +
-          'Type: ' + type + '\n' +
-          'Price each: $' + effectivePrice.toFixed(2) + '\n' +
-          'Total: $' + total
-        );
+        // Free gifts
+        var gifts = [];
+        if (selectedQty >= 1) { gifts.push({ name: 'FREE KittySupps\u2122 Measuring Scoop', origPrice: '$8.00', tag: 'Buy ' + selectedQty + ' Tub' + (selectedQty > 1 ? 's' : '') }); itemCount++; }
+        if (selectedQty >= 2) { gifts.push({ name: 'FREE KittySupps\u2122 Groom Brush', origPrice: '$20.00', tag: 'Buy ' + selectedQty + ' Tubs' }); itemCount++; }
+
+        // Title
+        document.getElementById('cartTitle').innerHTML = 'Cart &bull; ' + itemCount + ' items';
+
+        // Items HTML
+        var html = '';
+        // Main product
+        html += '<div class="cart-drawer__item">';
+        html += '<img class="cart-drawer__item-img" src="https://kittysupps.com/cdn/shop/files/1_cb7ff21b-1c25-4553-b6f1-aa54d3fa7799.png?v=1759582863&width=300" alt="KittySupps Taurine">';
+        html += '<div class="cart-drawer__item-info">';
+        html += '<div class="cart-drawer__item-name">KittySupps\u2122 Taurine Supplement</div>';
+        html += '<span class="cart-drawer__item-tag">\ud83c\udff7 Buy ' + selectedQty + ' Tub' + (selectedQty > 1 ? 's' : '') + '</span>';
+        if (isSubscribed) html += '<span class="cart-drawer__item-badge">Subscription</span>';
+        html += '<div class="cart-drawer__item-prices">';
+        html += '<span class="cart-drawer__item-price--old">$' + originalTotal + '</span>';
+        html += '<span class="cart-drawer__item-price--new">$' + total + '</span>';
+        html += '</div>';
+        html += '<div class="cart-drawer__item-savings">(You save $' + savings + ')</div>';
+        html += '<div class="cart-drawer__item-qty">';
+        html += '<button onclick="return false;">−</button>';
+        html += '<span>' + selectedQty + '</span>';
+        html += '<button onclick="return false;">+</button>';
+        html += '</div>';
+        html += '</div></div>';
+
+        // Free gifts
+        gifts.forEach(function (g) {
+          html += '<div class="cart-drawer__item cart-drawer__item--free">';
+          html += '<div style="width:8rem;height:8rem;border-radius:8px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:2.4rem;">\ud83c\udf81</div>';
+          html += '<div class="cart-drawer__item-info">';
+          html += '<div class="cart-drawer__item-name">' + g.name + '</div>';
+          html += '<span class="cart-drawer__item-tag">\ud83c\udff7 ' + g.tag + '</span>';
+          html += '<div class="cart-drawer__item-prices">';
+          html += '<span class="cart-drawer__item-price--old">' + g.origPrice + '</span>';
+          html += '<span class="cart-drawer__item-price--new">$0.00</span>';
+          html += '</div>';
+          html += '<div class="cart-drawer__item-savings">(You save ' + g.origPrice + ')</div>';
+          html += '</div></div>';
+        });
+
+        document.getElementById('cartItems').innerHTML = html;
+
+        // Footer
+        var giftSavings = (selectedQty >= 1 ? 8 : 0) + (selectedQty >= 2 ? 20 : 0);
+        var totalSavings = parseFloat(savings) + giftSavings;
+        document.getElementById('cartSavingsValue').textContent = '-$' + totalSavings.toFixed(2);
+        document.getElementById('cartSubtotal').textContent = '$' + total;
+
+        // Discounts
+        var discHTML = '<strong>Discounts:</strong> ';
+        discHTML += '<span>\ud83c\udff7 Buy ' + selectedQty + ' Tub' + (selectedQty > 1 ? 's' : '') + ' (-$' + savings + ')</span>';
+        if (giftSavings > 0) {
+          gifts.forEach(function (g) {
+            discHTML += '<span>\ud83c\udff7 ' + g.tag + ' (-' + g.origPrice + ')</span>';
+          });
+        }
+        document.getElementById('cartDiscounts').innerHTML = discHTML;
+      }
+
+      // ===== ADD TO CART BUTTON =====
+      document.getElementById('addToCartBtn').addEventListener('click', function () {
+        var btn = this;
+        btn.classList.add('loading');
+        btn.disabled = true;
+        setTimeout(function () {
+          btn.classList.remove('loading');
+          btn.disabled = false;
+          renderCart();
+          openCart();
+        }, 800);
       });
 
     })();
